@@ -1,4 +1,4 @@
-# Politica Speech Analysis with Natural Language Processing (NLP)
+# Political Speech Analysis with Natural Language Processing (NLP)
 
 ### Introduction
 This is my MSBA capstone project that I made in spring 2023. Minor modification has been made recently. The primary dataset includes textual data from 194 hours' convention speeches from both Democratic and Republican parties from 2004 to 2020. The textual data was transformed to a SQLite database with 3470 rows and 9 columns including `year`, `party`, `day`, `speaker`, `speaker count`, `time`, `text`, `text length`, and `the source of text`.

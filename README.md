@@ -27,5 +27,8 @@ Three *a* priori hypotheses:
 - Democrats are more likely to use future tense than Republicans in political speech.
 - Republicans are more likely than Democrats to use “I” rather than “we” in political speech. 
 
-### Ackowledgement
+### Results
+Our topic modeling identifies topics that gain or lose favor over time and topics that consistently reflect core values of the two parties. Our permutation test analysis shows statistically significant differences in past tense usage between the two parties in two corpora and in first-person singular and plural pronoun usage in convention speeches. 
+
+### Acknowledgment
 Special thanks to my MSBA professor, Dr. John Chandler, for his support throughout this project. 

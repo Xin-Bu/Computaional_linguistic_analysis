@@ -14,12 +14,15 @@ We used topic modeling to track the evolution of topics from 2004 to 2020.
 
 #### Permutation testing
 We used permutation testing to compare speech feature differences at the subtle linguistic granularity level. 
+
 Research questions: 
 - How does the first person pronoun usage vary by party? 
 - How does the verb tense usage vary by party?
+
 The null hypotheses: 
 - Party is independent of the first person pronoun usage. 
-- Party is independent of verb tense usage.    
+- Party is independent of verb tense usage.
+  
 Three *a* priori hypotheses:
 - Republicans are more likely to use past tense than Democrats in political speech.
 - Democrats are more likely to use future tense than Republicans in political speech.

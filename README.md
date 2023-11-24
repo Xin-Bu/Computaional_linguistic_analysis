@@ -1,8 +1,8 @@
 # Natural Language Processing (NLP) Analysis
 
 ### Introduction
-This is my MSBA capstone project that I made in spring 2023. The primary dataset includes textual data from 194 hours' convention speeches from both Democratic and Republican parties from 2004 to 2020. Our data sources are rev.com 
-      and C-SPAN.org. The textual data was transformed to a SQLite database with 3470 rows and 9 columns including `year`, `party`, `day`, `speaker`, `speaker count`, `time`, `text`, `text length`, and `the source of text`.
+This is my MSBA capstone project that I made in spring 2023. Minor modification has been made recently. The primary dataset includes textual data from 194 hours' convention speeches from both Democratic and Republican parties from 2004 to 2020. Our data sources are rev.com and C-SPAN.org. The textual data was transformed to a SQLite database with 3470 rows and 9 columns including `year`, `party`, `day`, `speaker`, `speaker count`, `time`, `text`, `text length`, and `the source of text`.
+
 An extended dataset that we used for this project was 1038 presidential speeches from 1789 to 2021, from George Washington to Joe Biden, for permutation testing. These speeches were delivered by 45 U.S. Presidents, 445 of which were from 19 Republican Presidents and 513 of which were from 16 Democratic Presidents.
 
 ### The research approaches

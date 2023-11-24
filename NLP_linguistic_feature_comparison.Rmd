@@ -1,0 +1,387 @@
+---
+title: "NLP_linguistic_feature_comparison"
+author: "Xin Bu"
+date: "11/12/2023"
+output: html_document
+html_document:
+    toc: true
+    toc_depth: 6
+    number_sections: true
+    toc_float: true
+    code_folding: hide
+    theme: flatly
+    code_download: true
+---
+
+
+```{r setup, include=FALSE}
+# Import libraries
+library(tidyverse)
+library(here)
+library(scales)
+
+```
+ 
+## 1. Convention speeches
+### 1.1 Convention past tense comparison
+```{r mean-permute-0, cache=T}
+# Read in the table csv file and give a variable `d` which will be the dataframe.
+d <- read_csv("convention_first_person_pronoun_tense.csv")
+
+# Add two columns to the dataframe. Calculate the fraction of past tense to verb count and future tense to verb count for each speech in the dataset. 
+d <- d %>% 
+  mutate(past_frac = if_else(verb_count > 0, past_tense_count/verb_count,NA_real_),
+         future_frac = if_else(verb_count > 0, future_tense_count/verb_count,NA_real_))
+
+# Define a function in which we take the dataframe as the input. It calculates the mean of past fraction for the Republicans and Democrats. The function returns the ratio of Republican mean to Democratic mean. 
+
+get_party_relative_rate <- function(data) {
+  repub_stat <- data %>% 
+    filter(party=="Republican") %>% 
+    pull(past_frac) %>% 
+    mean(na.rm=T)
+  
+  dem_stat <- data %>% 
+    filter(party=="Democratic") %>% 
+    pull(past_frac) %>% 
+    mean(na.rm=T)
+  
+  return(repub_stat/dem_stat)
+}
+
+# Calculate the actual value of the ratio of Republican and Democratic mean using the `get_party_relative_rate` function with the original dataset `d`.  
+actual_value <- get_party_relative_rate(d)
+
+# Permutation hypothesis. Party is independent of past-tense usage. Set the number of n_perms to 4,999. 
+n_perms <- 5*1000 - 1
+
+# Initialize a tibble to store the results of permutation test. The `results` tibble contains a column for the test statistic. It has one row for the actual value of the statistic and 4999 rows for the results of the permutation test. 
+results <- tibble(statistic = c(actual_value,rep(NA_real_,n_perms)))
+
+# Create a new dataframe `new_d` by selecting the two columns `party` and `past_frac`from our original dataset. 
+new_d <- d %>% 
+  select(party,past_frac)
+
+# Use a for loop to perform permutations of the `party` variable in `new_d`, calculate the test statistic for each permutation, and store the results in the corresponding row of `results`. 
+for(i in 2:nrow(results)){
+  new_d$party <- sample(new_d$party)
+  results$statistic[i] <- get_party_relative_rate(new_d)
+}
+
+# Calculate the p-value of the permutation test. Calculate the proportion of the permutation results that are within a certain distance from 1.
+mean(abs(actual_value- 1) <= abs(results$statistic - 1))
+
+# Create a plot of the permutation test statistics in absolute value. Add a vertical line at the location of the actual value. The x-axis of the plot shows the ratio of Republican to Democratic mean `past_frac` value as the percentage. 
+ggplot(results,aes(x=statistic)) +
+  geom_density(color="navyblue") + 
+  theme_minimal() + 
+  geom_vline(xintercept = actual_value,color="darkorange3") + 
+  labs(x="Convention Republican usage of past tense relative to Democrats",y="") + 
+  scale_x_continuous(label=percent)
+
+```
+
+
+
+### 1.2 Convention future tense comparison
+
+```{r mean-permute, cache=T}
+get_party_relative_rate_7 <- function(data) {
+  repub_stat <- data %>% 
+    filter(party=="Republican") %>% 
+    pull(future_frac) %>% 
+    mean(na.rm=T)
+  
+  dem_stat <- data %>% 
+    filter(party=="Democratic") %>% 
+    pull(future_frac) %>% 
+    mean(na.rm=T)
+  
+  return(repub_stat/dem_stat)
+}
+
+actual_value_7 <- get_party_relative_rate_7(d)
+
+n_perms_7 <- 5*1000 - 1
+
+results_7 <- tibble(statistic = c(actual_value_7,rep(NA_real_,n_perms)))
+
+new_d_7 <- d %>% 
+  select(party,future_frac)
+
+for(i in 2:nrow(results)){
+  new_d_7$party <- sample(new_d_7$party)
+  results_7$statistic[i] <- get_party_relative_rate_7(new_d_7)
+}
+
+mean(abs(actual_value_7- 1) <= abs(results_7$statistic - 1))
+
+ggplot(results_7,aes(x=statistic)) +
+  geom_density(color="navyblue") + 
+  theme_minimal() + 
+  geom_vline(xintercept = actual_value_7,color="darkorange3") + 
+  labs(x="Convention Republican usage of future tense relative to Democrats",y="") + 
+  scale_x_continuous(label=percent)
+```
+
+### 1.3 Convention first-person singular pronoun comparison
+```{r mean-permute-1, cache=T}
+
+d <- d %>% 
+  mutate(singular_frac = singular_count/sentence_count,
+         plural_frac = plural_count/sentence_count)
+
+get_party_relative_rate_2 <- function(data) {            
+  repub_stat <- data %>% 
+    filter(party=="Republican") %>% 
+    pull(singular_frac) %>% 
+    mean(na.rm=T)
+  
+  dem_stat <- data %>% 
+    filter(party=="Democratic") %>% 
+    pull(singular_frac) %>% 
+    mean(na.rm=T)
+  
+  return(repub_stat/dem_stat)
+}
+
+actual_value_2 <- get_party_relative_rate_2(d)
+
+n_perms_2 <- 5*1000 - 1
+
+results_2 <- tibble(statistic = c(actual_value_2,rep(NA_real_,n_perms_2)))
+
+new_d_2 <- d %>% 
+  select(party,singular_frac)
+
+for(i in 2:nrow(results)){
+  new_d_2$party <- sample(new_d_2$party)
+  results_2$statistic[i] <- get_party_relative_rate_2(new_d_2)
+}
+
+mean(abs(actual_value_2- 1) <= abs(results_2$statistic - 1))
+
+ggplot(results_2,aes(x=statistic)) +
+  geom_density(color="navyblue") + 
+  theme_minimal() + 
+  geom_vline(xintercept = actual_value_2,color="darkorange3") + 
+  labs(x="Convention Republican usage of first-person singular pronoun relative to Democrats",y="") + 
+  scale_x_continuous(label=percent)
+```
+
+### 1.4  Convention first-person plural pronoun comparison
+```{r mean-permute-2, cache=T}
+get_party_relative_rate_3 <- function(data) {
+  repub_stat <- data %>% 
+    filter(party=="Republican") %>% 
+    pull(plural_frac) %>% 
+    mean(na.rm=T)
+  
+  dem_stat <- data %>% 
+    filter(party=="Democratic") %>% 
+    pull(plural_frac) %>% 
+    mean(na.rm=T)
+  
+  return(repub_stat/dem_stat)
+}
+
+actual_value_3 <- get_party_relative_rate_3(d)
+
+n_perms_3 <- 5*1000 - 1
+
+results_3 <- tibble(statistic = c(actual_value_3,rep(NA_real_,n_perms_3)))
+
+new_d_3 <- d %>% 
+  select(party,plural_frac)
+
+for(i in 2:nrow(results_3)){
+  new_d_3$party <- sample(new_d_3$party)
+  results_3$statistic[i] <- get_party_relative_rate_3(new_d_3)
+}
+
+mean(abs(actual_value_3- 1) <= abs(results_3$statistic - 1))
+
+ggplot(results_3,aes(x=statistic)) +
+  geom_density(color="navyblue") + 
+  theme_minimal() + 
+  geom_vline(xintercept = actual_value_3,color="darkorange3") + 
+  labs(x="Convention Republican usage of first-person plural pronoun relative to Democrats",y="") + 
+  scale_x_continuous(label=percent) 
+```
+
+
+## 2. Presidential speeches
+### 2.1 Presidential past tense comparison 
+```{r mean-permute-3, cache=T}
+
+d_pres <- read_csv("presidential_first_person_pronoun_tense.csv")
+
+d_pres <- d_pres %>% 
+  mutate(past_frac = past_tense_count/verb_count,
+         future_frac = future_tense_count/verb_count)
+
+get_party_relative_rate_4 <- function(data) {
+  repub_stat <- data %>% 
+    filter(party=="Republican") %>% 
+    pull(past_frac) %>% 
+    mean(na.rm=T)
+  
+  dem_stat <- data %>% 
+    filter(party=="Democratic") %>% 
+    pull(past_frac) %>% 
+    mean(na.rm=T)
+  
+  return(repub_stat/dem_stat)
+}
+
+actual_value_4 <- get_party_relative_rate_4(d_pres)
+
+n_perms_4 <- 5*1000 - 1
+
+results_4 <- tibble(statistic = c(actual_value_4,rep(NA_real_,n_perms_4)))
+
+new_d_4 <- d_pres %>% 
+  select(party,past_frac)
+
+for(i in 2:nrow(results_4)){
+  new_d_4$party <- sample(new_d_4$party)
+  results_4$statistic[i] <- get_party_relative_rate_4(new_d_4)
+}
+
+mean(abs(actual_value_4- 1) <= abs(results_4$statistic - 1))
+
+ggplot(results_4,aes(x=statistic)) +
+  geom_density(color="navyblue") + 
+  theme_minimal() + 
+  geom_vline(xintercept = actual_value_4,color="darkorange3") + 
+  labs(x="Presidential Republican usage of past tense relative to Democrats",y="") + 
+  scale_x_continuous(label=percent)
+```
+
+
+### 2.2 Presidential future tense comparison
+```{r mean-permute-4, cache=T}
+get_party_relative_rate_8 <- function(data) {
+  repub_stat <- data %>% 
+    filter(party=="Republican") %>% 
+    pull(future_frac) %>% 
+    mean(na.rm=T)
+  
+  dem_stat <- data %>% 
+    filter(party=="Democratic") %>% 
+    pull(future_frac) %>% 
+    mean(na.rm=T)
+  
+  return(repub_stat/dem_stat)
+}
+
+actual_value_8 <- get_party_relative_rate_8(d_pres)
+
+n_perms_8 <- 5*1000 - 1
+
+results_8 <- tibble(statistic = c(actual_value_8,rep(NA_real_,n_perms_8)))
+
+new_d_8 <- d_pres %>% 
+  select(party,future_frac)
+
+for(i in 2:nrow(results_8)){
+  new_d_8$party <- sample(new_d_8$party)
+  results_8$statistic[i] <- get_party_relative_rate_8(new_d_8)
+}
+
+mean(abs(actual_value_8- 1) <= abs(results_8$statistic - 1))
+
+ggplot(results_8,aes(x=statistic)) +
+  geom_density(color="navyblue") + 
+  theme_minimal() + 
+  geom_vline(xintercept = actual_value_8,color="darkorange") + 
+  labs(x="Presidential Republican usage of future tense relative to Democrats",y="") + 
+  scale_x_continuous(label=percent)
+```
+
+
+### 2.3 Presidential first-person singular pronoun comparison
+```{r mean-permute-5, cache=T}
+d_pres <- d_pres %>% 
+  mutate(singular_frac = singular_count/sentence_count,
+         plural_frac = plural_count/sentence_count)
+
+get_party_relative_rate_5 <- function(data) {
+  repub_stat <- data %>% 
+    filter(party=="Republican") %>% 
+    pull(singular_frac) %>% 
+    mean(na.rm=T)
+  
+  dem_stat <- data %>% 
+    filter(party=="Democratic") %>% 
+    pull(singular_frac) %>% 
+    mean(na.rm=T)
+  
+  return(repub_stat/dem_stat)
+}
+
+actual_value_5 <- get_party_relative_rate_5(d_pres)
+
+n_perms_5 <- 5*1000 - 1
+
+results_5 <- tibble(statistic = c(actual_value_5,rep(NA_real_,n_perms_5)))
+
+new_d_5 <- d_pres %>% 
+  select(party,singular_frac)
+
+for(i in 2:nrow(results_5)){
+  new_d_5$party <- sample(new_d_5$party)
+  results_5$statistic[i] <- get_party_relative_rate_5(new_d_5)
+}
+
+mean(abs(actual_value_5- 1) <= abs(results_5$statistic - 1))
+
+ggplot(results_5,aes(x=statistic)) +
+  geom_density(color="navyblue") + 
+  theme_minimal() + 
+  geom_vline(xintercept = actual_value_5,color="darkorange3") + 
+  labs(x="Presidential Republican usage of first-person singular pronoun relative to Democrats",y="") + 
+  scale_x_continuous(label=percent)
+```
+
+
+### 2.4 Presidential first-person plural pronoun comparison
+```{r mean-permute-6, cache=T}
+get_party_relative_rate_6 <- function(data) {
+  repub_stat <- data %>% 
+    filter(party=="Republican") %>% 
+    pull(plural_frac) %>% 
+    mean(na.rm=T)
+  
+  dem_stat <- data %>% 
+    filter(party=="Democratic") %>% 
+    pull(plural_frac) %>% 
+    mean(na.rm=T)
+  
+  return(repub_stat/dem_stat)
+}
+
+actual_value_6 <- get_party_relative_rate_6(d_pres)
+
+n_perms_6 <- 5*1000 - 1
+
+results_6 <- tibble(statistic = c(actual_value_6,rep(NA_real_,n_perms_6)))
+
+new_d_6 <- d_pres %>% 
+  select(party,plural_frac)
+
+for(i in 2:nrow(results_6)){
+  new_d_6$party <- sample(new_d_6$party)
+  results_6$statistic[i] <- get_party_relative_rate_6(new_d_6)
+}
+
+mean(abs(actual_value_6- 1) <= abs(results_6$statistic - 1))
+
+ggplot(results_6,aes(x=statistic)) +
+  geom_density(color="navyblue") + 
+  theme_minimal() + 
+  geom_vline(xintercept = actual_value_6,color="darkorange3") + 
+  labs(x="Presidential Republican usage of first-person plural pronoun relative to Democrats",y="") + 
+  scale_x_continuous(label=percent)
+```
+

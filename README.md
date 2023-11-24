@@ -13,5 +13,3 @@ Our topic modeling identified topics that gained or lost favor over time and top
 ### Dataset source
 * Covention speeches: rev.com and C-SPAN.org.
 * Presidential speeches: https://millercenter.org/the-presidency/presidential-speeches. 
-### Acknowledgment
-Special thanks to my MSBA professor, Dr. John Chandler, for his support throughout this project. 

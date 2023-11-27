@@ -1,7 +1,7 @@
 # Political Speech Analysis with Natural Language Processing (NLP)
 
 ### Datasets
-This is my MSBA capstone project that I made in spring 2023. Minor modification has been made recently. The primary dataset includes large-scale textual data transcribed from 194 hours' Democratic and Republican convention speeches from 2004 to 2020. The textual data were transformed to a SQLite database with 3470 rows and 9 columns including `year`, `party`, `day`, `speaker`, `speaker count`, `time`, `text`, `text length`, and `the source of text`.
+This is my Master of Science in Business Analytics (MSBA) capstone project in spring 2023. Minor modification has been made recently. The primary dataset includes large-scale textual data transcribed from 194 hours' Democratic and Republican convention speeches from 2004 to 2020. The textual data were transformed to a SQLite database with 3470 rows and 9 columns including `year`, `party`, `day`, `speaker`, `speaker count`, `time`, `text`, `text length`, and `the source of text`.
 
 An extended dataset that we used for this project was 1038 presidential speeches from 1789 to 2021, from George Washington to Joe Biden, for permutation testing. These speeches were delivered by 45 U.S. Presidents, 445 of which were from 19 Republican Presidents and 513 of which were from 16 Democratic Presidents.
 ### Methods

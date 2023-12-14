@@ -11,5 +11,5 @@ We used two research approaches, topic modeling and permuation testing, in this 
 ### Results
 Our topic modeling identified topics that gained or lost favor over time and topics that consistently reflected core values of the two parties. Our permutation test analysis showed statistically significant differences in past tense usage between the two parties in two corpora and in first-person singular and plural pronoun usage in convention speeches. 
 ### Dataset source
-* Covention speeches: rev.com and C-SPAN.org.
-* Presidential speeches: https://millercenter.org/the-presidency/presidential-speeches. 
+* [Covention speech 1](rev.com)  and [Covention speech 2](C-SPAN.org)
+* [Presidential speech](https://millercenter.org/the-presidency/presidential-speeches) 

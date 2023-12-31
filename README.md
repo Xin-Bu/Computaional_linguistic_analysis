@@ -1,7 +1,9 @@
 # Political Speech Analysis with Natural Language Processing (NLP)
+![image](https://github.com/Xin-Bu/Computaional_linguistic_analysis/assets/69817896/8aad5c60-84a0-45e0-8e6a-866fe1a25215)
 
+[Image source](https://www.cnn.com/style/article/why-democrats-are-donkeys-republicans-are-elephants-artsy/index.html)
 ### Datasets
-This is my Master of Science in Business Analytics (MSBA) capstone project in spring 2023. Minor modification has been made recently. The primary dataset includes large-scale textual data transcribed from 194 hours' Democratic National Convention (DNC) and Republican National Convention (RNC) speeches from 2004 to 2020. The text data were transformed to a SQLite database with 3470 rows and 9 columns including `year`, `party`, `day`, `speaker`, `speaker count`, `time`, `text`, `text length`, and `the source of text`. 
+This is my Master of Science in Business Analytics (MSBA) capstone project in spring 2023. Minor modification has been made recently. The primary dataset includes large-scale text data transcribed from 194 hours' Democratic National Convention (DNC) and Republican National Convention (RNC) speeches from 2004 to 2020. The text data were transformed to a SQLite database with 3470 rows and 9 columns including `year`, `party`, `day`, `speaker`, `speaker count`, `time`, `text`, `text length`, and `the source of text`. 
 
 An extended dataset that we used for this project was 1038 presidential speeches from 1789 to 2021, from George Washington to Joe Biden, for permutation testing. These speeches were delivered by 45 U.S. Presidents, 445 of which were from 19 Republican Presidents and 513 of which were from 16 Democratic Presidents. 
 ### Methods
